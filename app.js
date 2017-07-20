@@ -27,13 +27,14 @@ fs.readdirSync(controller).forEach(function (fileName) {
   var filePath = controller + fileName;
   var urlmodel = fileName.substr(0, fileName.lastIndexOf('.'));
   if (!fs.lstatSync(filePath).isDirectory()) {
-    if (urlmodel === 'index') {
+    app.use('/', require(filePath));
+    /*if (urlmodel === 'index') {
       // 默认路径, 如: /...
       app.use('/', require(filePath));
     } else {
       // 以文件名为第一级路径，如：/user/...
       app.use("/" + urlmodel, require(filePath));
-    }
+    }*/
   }
 });
 
