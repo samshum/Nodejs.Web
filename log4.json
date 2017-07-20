@@ -1,0 +1,12 @@
+{
+  "appenders": [
+     {
+      "category": "log_date",
+      "type": "dateFile",
+      "filename": "./logs/",
+      "alwaysIncludePattern": true,
+      "pattern": "yyyy-MM-dd-hh.log"
+    }
+  ],
+  "replaceConsole": true
+}
