@@ -17,69 +17,68 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// ÉèÖÃ¾²Ì¬ÎÄ¼şµØÖ·
+// è®¾ç½®é™æ€æ–‡ä»¶åœ°å€
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
-// ÉèÖÃ¿ØÖÆÆ÷ÁĞ±í¼°ÏìÓ¦Â·¾¶
+// è®¾ç½®æ§åˆ¶å™¨åˆ—è¡¨åŠå“åº”è·¯å¾„
 var controller = app.get('controller');
-fs.readdirSync(controller).forEach(function (fileName) {
-  var filePath = controller + fileName;
-  var urlmodel = fileName.substr(0, fileName.lastIndexOf('.'));
-  if (!fs.lstatSync(filePath).isDirectory()) {
-    app.use('/', require(filePath));
-    /*if (urlmodel === 'index') {
-      // Ä¬ÈÏÂ·¾¶, Èç: /...
-      app.use('/', require(filePath));
-    } else {
-      // ÒÔÎÄ¼şÃûÎªµÚÒ»¼¶Â·¾¶£¬Èç£º/user/...
-      app.use("/" + urlmodel, require(filePath));
-    }*/
-  }
+fs.readdirSync(controller).forEach(function(fileName) {
+    var filePath = controller + fileName;
+    var urlmodel = fileName.substr(0, fileName.lastIndexOf('.'));
+    if (!fs.lstatSync(filePath).isDirectory()) {
+        app.use('/', require(filePath));
+        /*if (urlmodel === 'index') {
+          // é»˜è®¤è·¯å¾„, å¦‚: /...
+          app.use('/', require(filePath));
+        } else {
+          // ä»¥æ–‡ä»¶åä¸ºç¬¬ä¸€çº§è·¯å¾„ï¼Œå¦‚ï¼š/user/...
+          app.use("/" + urlmodel, require(filePath));
+        }*/
+    }
 });
 
 // Log setting
-if (!fs.existsSync(__dirname + "/log/"))
-{
-    fs.mkdir(__dirname + "/log/");
+if (!fs.existsSync(__dirname + "/logs/")) {
+    fs.mkdir(__dirname + "/logs/");
 }
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
     });
-  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
-//Ó¦ÓÃÖÕÖ¹ÍË³ö
+//åº”ç”¨ç»ˆæ­¢é€€å‡º
 /*
 process.on('exit',function(){
  console.log('Exit...........');
 });
 
-//Ó¦ÓÃÎ´CatchÒì³£
+//åº”ç”¨æœªCatchå¼‚å¸¸
 process.on('uncaughtException', function (err) {
   console.log(err);
   log.write('error', err);
